@@ -4,5 +4,5 @@
     var ctrl = this;
     ctrl.title = "Mes trucs a faire";
   }
-  angular.module("starter").controller("todosController", controller);
+  angular.module("todosModule").controller("todosController", controller);
 })();
