@@ -1,7 +1,10 @@
 {
-  "name": "ionic4Looyas",
+  "name": "ionic4looyas",
   "version": "0.0.1",
   "description": "An Ionic project",
+  "scripts": {
+    "start": "ionic serve -w chromium"
+  },
   "devDependencies": {
     "@ionic/v1-toolkit": "^1.0.0",
     "gulp": "^3.5.6",
