@@ -9873,3 +9873,7 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+#home h1 {
+  color: #387ef5;
+  padding: 10px; }
