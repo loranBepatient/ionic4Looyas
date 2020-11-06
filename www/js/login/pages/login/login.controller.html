@@ -1,0 +1,31 @@
+<ion-view>
+  <ion-content>
+    <form name="loginForm" ng-submit="$ctrl.onSubmit()">
+      <div class="list list-inset">
+        <label class="item item-input">
+          <input
+            type="email"
+            required
+            placeholder="Votre adresse email"
+            ng-model="$ctrl.loginForm.email"
+          />
+        </label>
+        <label class="item item-input">
+          <input
+            type="password"
+            required
+            placeholder="Votre mot de passe"
+            ng-model="$ctrl.loginForm.password"
+          />
+        </label>
+        <button
+          class="button button-block button-positive"
+          type="submit"
+          ng-disabled="loginForm.$invalid"
+        >
+          Se connecter
+        </button>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>
