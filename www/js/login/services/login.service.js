@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  function LoginService($http, $window, INSTANCE_URL) {
+  function LoginService($http, UserService, INSTANCE_URL) {
     var loginEndPoint = "/rest/v2/;login";
 
     return {
@@ -16,19 +16,13 @@
         .catch(onLoginFailed);
 
       function onLoginComplete(response) {
-        setLocalStorage(response.data);
+        UserService.setLocalStorage(response.data);
         return true;
       }
 
       function onLoginFailed(error) {
         throw new Error(error.data.error.msg);
       }
-    }
-
-    function setLocalStorage(userInfo) {
-      $window.localStorage.setItem("iauth", userInfo.iauth);
-      $window.localStorage.setItem("user_id", userInfo.user_id);
-      $window.localStorage.setItem("uuid", userInfo.uuid);
     }
 
     function _parseCredential(credentials) {

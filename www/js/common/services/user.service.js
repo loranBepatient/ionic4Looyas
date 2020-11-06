@@ -1,9 +1,8 @@
 (function () {
   "use strict";
 
-  function UserService($http, INSTANCE_URL) {
+  function UserService($http, $window, INSTANCE_URL) {
     var userEndPoint = "/rest/v2/;user";
-    var currentUser = {};
 
     return {
       setLocalStorage: setLocalStorage,
@@ -11,24 +10,36 @@
     };
 
     function getUser() {
-      return $http
-        .get(INSTANCE_URL, userEndPoint)
+      const requestHeader = {
+        method: "GET",
+        url: INSTANCE_URL + userEndPoint,
+        headers: {
+          Authorization: "basic " + getFromStorage("iauth"),
+        },
+      };
+      return $http(requestHeader)
         .then(onGetUserComplete)
         .catch(onGetUserFailed);
 
       function onGetUserComplete(response) {
-        debugger;
+        return response.data;
       }
 
       function onGetUserFailed(error) {
-        debugger;
+        throw new Error(error.data.error.msg);
       }
     }
 
-    function setLocalStorage(auth) {
-      debugger;
+    function setLocalStorage(userInfo) {
+      $window.localStorage.setItem("iauth", userInfo.iauth);
+      $window.localStorage.setItem("user_id", userInfo.user_id);
+      $window.localStorage.setItem("uuid", userInfo.uuid);
+    }
+
+    function getFromStorage(item) {
+      return $window.localStorage.getItem(item);
     }
   }
 
-  angular.module("common").factory("UserService", UserService);
+  angular.module("commonModule").factory("UserService", UserService);
 })();
