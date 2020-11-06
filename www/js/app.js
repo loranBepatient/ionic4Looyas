@@ -10,6 +10,7 @@ angular
     "homeModule",
     "todosModule",
     "loginModule",
+    "ngAnimate",
   ])
 
   .run(function ($ionicPlatform) {
