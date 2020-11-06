@@ -1,9 +1,8 @@
 (function () {
   "use strict";
 
-  function LoginService($http, $window) {
-    var loginEndPoint =
-      "https://beta-mobi-care4today.bepatientsolutions.com/rest/v2/;login";
+  function LoginService($http, $window, INSTANCE_URL) {
+    var loginEndPoint = "/rest/v2/;login";
 
     return {
       authenticate: authenticate,
@@ -12,7 +11,7 @@
     function authenticate(credentials) {
       var parsedCredential = _parseCredential(credentials);
       return $http
-        .post(loginEndPoint, parsedCredential)
+        .post(INSTANCE_URL + loginEndPoint, parsedCredential)
         .then(onLoginComplete)
         .catch(onLoginFailed);
 
