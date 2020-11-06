@@ -1,7 +1,14 @@
 (function () {
   "use strict";
-  function loginPageController(LoginService, $state, $ionicLoading) {
+  function loginPageController(
+    LoginService,
+    $state,
+    $ionicLoading,
+    $ionicPopup
+  ) {
     var ctrl = this;
+
+    ctrl.logo = "img/logo.png";
     ctrl.loginForm = {
       email: "",
       password: "",
@@ -18,7 +25,15 @@
     }
 
     function onLoginFailed(message) {
-      alert(message);
+      var alertPopup = $ionicPopup.alert({
+        title: "Connexion impossible",
+        template:
+          '<p style="color: red; text-align:center">' + message + "</p>",
+      });
+
+      alertPopup.then(function (response) {
+        ctrl.loginForm.password = "";
+      });
     }
 
     function checkCredentials(credentials) {

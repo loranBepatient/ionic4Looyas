@@ -9884,5 +9884,10 @@ a.button {
 
 .login-content {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center; }
+  justify-content: center;
+  flex-wrap: wrap; }
+  .login-content .item-image {
+    border: none;
+    margin-bottom: 2rem; }
