@@ -10,24 +10,28 @@
     ctrl.onSubmit = onSubmit;
 
     function onSubmit() {
-      $ionicLoading
-        .show()
-        .then(function () {
-          return LoginService.authenticate(ctrl.loginForm);
-        })
-        .then(onLoginSuccess)
-        .catch(onLoginFailed)
-        .finally(function () {
-          $ionicLoading.hide();
-        });
+      checkCredentials(ctrl.loginForm);
     }
 
     function onLoginSuccess() {
       $state.go("home");
     }
 
-    function onLoginFailed() {
-      alert("Les identifiants sont incorrects");
+    function onLoginFailed(message) {
+      alert(message);
+    }
+
+    function checkCredentials(credentials) {
+      $ionicLoading
+        .show()
+        .then(function () {
+          return LoginService.authenticate(credentials);
+        })
+        .then(onLoginSuccess)
+        .catch(onLoginFailed)
+        .finally(function () {
+          $ionicLoading.hide();
+        });
     }
   }
 
