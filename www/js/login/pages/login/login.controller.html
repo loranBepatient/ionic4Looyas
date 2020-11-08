@@ -1,35 +1,43 @@
 <ion-view>
   <ion-content class="login-content" scroll="false">
-    <div class="item item-image">
-      <img class="logo" ng-src="{{$ctrl.logo}}" alt="" />
-    </div>
-    <form name="loginForm" ng-submit="$ctrl.onSubmit()">
-      <div class="list list-inset">
-        <label class="item item-input">
-          <input
-            type="email"
-            required
-            placeholder="Votre adresse email"
-            ng-model="$ctrl.loginForm.email"
-          />
-        </label>
-        <label class="item item-input">
-          <input
-            type="password"
-            required
-            placeholder="Votre mot de passe"
-            ng-model="$ctrl.loginForm.password"
-          />
-        </label>
-        <button
-          class="button button-block button-positive"
-          type="submit"
-          ng-disabled="loginForm.$invalid"
-        >
-          Se connecter
-        </button>
+    <div class="row" style="min-height: 50%">
+      <div class="col col-50 col-offset-25 col-center">
+        <div class="item item-image">
+          <img class="logo" ng-src="{{$ctrl.logo}}" alt="" />
+        </div>
       </div>
-    </form>
+    </div>
+    <div class="row">
+      <div class="col col-50 col-offset-25">
+        <form name="loginForm" ng-submit="$ctrl.onSubmit()">
+          <div class="list list-inset">
+            <label class="item item-input">
+              <input
+                type="email"
+                required
+                placeholder="Votre adresse email"
+                ng-model="$ctrl.loginForm.email"
+              />
+            </label>
+            <label class="item item-input">
+              <input
+                type="password"
+                required
+                placeholder="Votre mot de passe"
+                ng-model="$ctrl.loginForm.password"
+              />
+            </label>
+            <button
+              class="button button-block button-positive"
+              type="submit"
+              ng-disabled="loginForm.$invalid"
+            >
+              Se connecter
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </ion-content>
   <ion-footer-bar align-title="center" class="bar-positive">
     <h2 class="title">Mot de passe perdu</h2>
