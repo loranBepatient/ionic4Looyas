@@ -1,26 +1,43 @@
 (function () {
   "use strict";
 
-  function controller($ionicHistory, ChartService) {
+  function controller(
+    $ionicHistory,
+    $ionicTabsDelegate,
+    $timeout,
+    $scope,
+    ChartService
+  ) {
     var ctrl = this;
     ctrl.title = "Graph list";
     ctrl.goBack = goBack;
     ctrl.selectMeasure = selectMeasure;
+    ctrl.onTabSelected = onTabSelected;
 
-    init();
+    $scope.$on("$ionicView.loaded", loadedHandler);
 
-    function init() {
+    function loadedHandler() {
       loadMeasures();
     }
 
     function loadMeasures() {
-      ChartService.getMeasuresList().then(function (measures) {
-        ctrl.measures = measures;
+      ChartService.getCategoriesWithMeasures().then(function (categories) {
+        ctrl.categories = categories;
+
+        $timeout(function () {
+          $ionicTabsDelegate.select(1);
+        }, 10);
+
+        ctrl.selectedCategory = categories[1];
       });
     }
 
     function selectMeasure(measure) {
       console.log("go to selected measure", measure);
+    }
+
+    function onTabSelected(category) {
+      ctrl.selectedCategory = category;
     }
 
     function goBack() {

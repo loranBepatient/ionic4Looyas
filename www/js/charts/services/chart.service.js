@@ -1,14 +1,14 @@
 (function () {
   "use strict";
 
-  function service(INSTANCE_URL, UserService, $http, $q) {
+  function ChartService(INSTANCE_URL, UserService, $http, $q) {
     var endpoints = {
       categories: "/api/measures/categories",
       devices: "/rest/v2/;devices_info",
       activityModels: "/rest/v2/;activity_models",
     };
     return {
-      getMeasuresList: getMeasuresList,
+      getCategoriesWithMeasures: getCategoriesWithMeasures,
     };
 
     function forgeHttpRequest(url) {
@@ -27,7 +27,7 @@
       $http(request).then(getCategoriesSuccess).catch(getCategoriesFailed);
 
       function getCategoriesSuccess(response) {
-        deferred.resolve(response.data.items);
+        deferred.resolve(response.data);
       }
 
       function getCategoriesFailed(error) {
@@ -36,45 +36,78 @@
       return deferred.promise;
     }
 
-    function getCategoryLink() {
+    // function getCategoryLink() {
+    //   var deferred = $q.defer();
+    //   getCategories()
+    //     .then(function (categories) {
+    //       deferred.resolve(categories[1].links.self.href);
+    //     })
+    //     .catch(function (error) {
+    //       deferred.reject(error);
+    //     });
+
+    //   return deferred.promise;
+    // }
+
+    function getCategoriesWithMeasures() {
       var deferred = $q.defer();
+
       getCategories()
         .then(function (categories) {
-          deferred.resolve(categories[1].links.self.href);
+          return getMeasures(categories.items);
+        })
+        .then(function (categories) {
+          deferred.resolve(categories);
         })
         .catch(function (error) {
-          deferred.reject(error);
+          throw new Error(error);
         });
+
+      // getCategoryLink()
+      //   .then(function (link) {
+      //     var request = {
+      //       method: "GET",
+      //       url: link,
+      //       headers: {
+      //         Authorization: "basic " + UserService.getFromStorage("iauth"),
+      //       },
+      //     };
+      //     return $http(request);
+      //   })
+      //   .then(function (measures) {
+      //     deferred.resolve(measures.data.items);
+      //   })
+      //   .catch(function (error) {
+      //     deferred.reject(error);
+      //   });
 
       return deferred.promise;
     }
 
-    function getMeasuresList() {
+    function getMeasures(categories) {
       var deferred = $q.defer();
-
-      getCategoryLink()
-        .then(function (link) {
-          var request = {
-            method: "GET",
-            url: link,
-            headers: {
-              Authorization: "basic " + UserService.getFromStorage("iauth"),
-            },
-          };
-          return $http(request);
-        })
-        .then(function (measures) {
-          deferred.resolve(measures.data.items);
-        })
-        .catch(function (error) {
-          deferred.reject(error);
+      var requests = categories.map(function (category) {
+        return $http({
+          method: "GET",
+          url: category.links.self.href,
+          headers: {
+            Authorization: "basic " + UserService.getFromStorage("iauth"),
+          },
         });
+      });
+
+      $q.all(requests).then(function (responses) {
+        categories.forEach(function (category, index) {
+          category.measures = responses[index].data.items;
+        });
+        deferred.resolve(categories);
+      });
 
       return deferred.promise;
     }
   }
 
-  angular.module("chartsModule").factory("ChartService", service);
+  angular.module("chartsModule").factory("ChartService", ChartService);
 })();
 
 var demoCharts = [
