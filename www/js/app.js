@@ -10,6 +10,7 @@ angular
     "homeModule",
     "todosModule",
     "loginModule",
+    "chartsModule",
     "ngAnimate",
   ])
 

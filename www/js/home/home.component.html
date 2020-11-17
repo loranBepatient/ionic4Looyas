@@ -1,6 +1,9 @@
 <ion-view>
   <ion-header-bar align-title="center" class="bar-positive">
     <h1 class="title">{{ $ctrl.title }}</h1>
+    <div class="buttons">
+      <a class="button button-icon icon ion-stats-bars" href="#/chart-list"></a>
+    </div>
   </ion-header-bar>
 
   <ion-content id="home" class="has-header" padding>
@@ -11,6 +14,7 @@
         <p>{{ $ctrl.user.email }}</p>
       </div>
     </div>
+
     <h1 class="primary"></h1>
     <div class="list card">
       <a href="#/todos" class="item item-icon-left">
@@ -18,8 +22,7 @@
         Mes taches
       </a>
 
-      <a href="#" class="item item-icon-left"
-        >D
+      <a href="#" class="item item-icon-left">
         <i class="icon ion-ios-telephone"></i>
         Enter phone number
       </a>

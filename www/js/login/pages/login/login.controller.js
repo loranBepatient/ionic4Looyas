@@ -1,6 +1,7 @@
 (function () {
   "use strict";
   function loginPageController(
+    DEFAULT_USER,
     LoginService,
     $state,
     $ionicLoading,
@@ -10,8 +11,8 @@
 
     ctrl.logo = "img/logo.png";
     ctrl.loginForm = {
-      email: "",
-      password: "",
+      email: DEFAULT_USER.email,
+      password: DEFAULT_USER.password,
     };
 
     ctrl.onSubmit = onSubmit;
