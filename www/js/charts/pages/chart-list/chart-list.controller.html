@@ -7,7 +7,21 @@
 </ion-header-bar>
 
 <ion-content class="has-header">
-  <div class="highchart-holder" ng-repeat="chart in $ctrl.charts ">
-    <highchart id="chart1" config="chart"></highchart>
+  <ion-card ng-repeat="measure in $ctrl.measures">{{measure.title}}</ion-card>
+  <div
+    class="card"
+    ng-repeat="measure in $ctrl.measures"
+    ng-click="$ctrl.selectMeasure(measure)"
+  >
+    <div class="item item-avatar">
+      <img ng-src="{{measure.meta.thumbnail}}" />
+      <h2 ng-style="{color: measure.meta.color}">{{measure.meta.title}}</h2>
+      <p>
+        <a href="#" class="subdued">{{measure.meta.last_activity.time}}</a>
+      </p>
+    </div>
   </div>
+  <!-- <div class="highchart-holder" ng-repeat="chart in $ctrl.charts ">
+    <highchart id="chart1" config="chart"></highchart>
+  </div> -->
 </ion-content>

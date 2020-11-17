@@ -1,18 +1,76 @@
 (function () {
   "use strict";
 
-  function service() {
+  function service(INSTANCE_URL, UserService, $http, $q) {
+    var endpoints = {
+      categories: "/api/measures/categories",
+      devices: "/rest/v2/;devices_info",
+      activityModels: "/rest/v2/;activity_models",
+    };
     return {
-      getCharts: getCharts,
-      getChartConfig: getChartConfig,
+      getMeasuresList: getMeasuresList,
     };
 
-    function getCharts() {
-      return demoCharts;
+    function forgeHttpRequest(url) {
+      return {
+        method: "GET",
+        url: INSTANCE_URL + url,
+        headers: {
+          Authorization: "basic " + UserService.getFromStorage("iauth"),
+        },
+      };
     }
 
-    function getChartConfig(id) {
-      return demoCharts[id];
+    function getCategories() {
+      var deferred = $q.defer();
+      var request = forgeHttpRequest(endpoints.categories);
+      $http(request).then(getCategoriesSuccess).catch(getCategoriesFailed);
+
+      function getCategoriesSuccess(response) {
+        deferred.resolve(response.data.items);
+      }
+
+      function getCategoriesFailed(error) {
+        deferred.reject(error);
+      }
+      return deferred.promise;
+    }
+
+    function getCategoryLink() {
+      var deferred = $q.defer();
+      getCategories()
+        .then(function (categories) {
+          deferred.resolve(categories[1].links.self.href);
+        })
+        .catch(function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    }
+
+    function getMeasuresList() {
+      var deferred = $q.defer();
+
+      getCategoryLink()
+        .then(function (link) {
+          var request = {
+            method: "GET",
+            url: link,
+            headers: {
+              Authorization: "basic " + UserService.getFromStorage("iauth"),
+            },
+          };
+          return $http(request);
+        })
+        .then(function (measures) {
+          deferred.resolve(measures.data.items);
+        })
+        .catch(function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
     }
   }
 

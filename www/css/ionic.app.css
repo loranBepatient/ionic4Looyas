@@ -9887,12 +9887,16 @@ a.button {
   padding: 10px;
   color: orange; }
 
-.login-content {
+.login-content .item-image {
+  border: none; }
+
+.login-content form label {
+  margin: 1rem auto; }
+  .login-content form label input {
+    text-align: center; }
+
+.highchart-holder {
+  border: 2px solid #387ef5;
+  margin: 1rem;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap; }
-  .login-content .item-image {
-    border: none;
-    margin-bottom: 2rem; }
+  justify-content: center; }

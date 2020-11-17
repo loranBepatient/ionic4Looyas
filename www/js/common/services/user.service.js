@@ -6,6 +6,7 @@
 
     return {
       setLocalStorage: setLocalStorage,
+      getFromStorage: getFromStorage,
       getUser: getUser,
     };
 
