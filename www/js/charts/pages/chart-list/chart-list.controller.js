@@ -4,6 +4,7 @@
   function controller(
     $ionicHistory,
     $ionicTabsDelegate,
+    $state,
     $timeout,
     $scope,
     ChartService
@@ -33,7 +34,7 @@
     }
 
     function selectMeasure(measure) {
-      console.log("go to selected measure", measure);
+      $state.go("chart", { uuid: measure.uuid });
     }
 
     function onTabSelected(category) {

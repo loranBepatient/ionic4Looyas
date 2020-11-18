@@ -6,24 +6,37 @@
       categories: "/api/measures/categories",
       devices: "/rest/v2/;devices_info",
       activityModels: "/rest/v2/;activity_models",
+      score: "/api/measures/score",
     };
     return {
       getCategoriesWithMeasures: getCategoriesWithMeasures,
+      getChart: getChart,
     };
 
-    function forgeHttpRequest(url) {
-      return {
+    function getChart(id) {
+      var deferred = $q.defer();
+
+      $http({
         method: "GET",
-        url: INSTANCE_URL + url,
+        url: INSTANCE_URL + endpoints.score + "/" + id,
         headers: {
           Authorization: "basic " + UserService.getFromStorage("iauth"),
         },
-      };
+      })
+        .then(function (score) {
+          var chartConfig = _getChartConfigFromScore(score);
+          deferred.resolve(chartConfig);
+        })
+        .catch(function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
     }
 
     function getCategories() {
       var deferred = $q.defer();
-      var request = forgeHttpRequest(endpoints.categories);
+      var request = _forgeHttpRequest(endpoints.categories);
       $http(request).then(getCategoriesSuccess).catch(getCategoriesFailed);
 
       function getCategoriesSuccess(response) {
@@ -35,19 +48,6 @@
       }
       return deferred.promise;
     }
-
-    // function getCategoryLink() {
-    //   var deferred = $q.defer();
-    //   getCategories()
-    //     .then(function (categories) {
-    //       deferred.resolve(categories[1].links.self.href);
-    //     })
-    //     .catch(function (error) {
-    //       deferred.reject(error);
-    //     });
-
-    //   return deferred.promise;
-    // }
 
     function getCategoriesWithMeasures() {
       var deferred = $q.defer();
@@ -62,24 +62,6 @@
         .catch(function (error) {
           throw new Error(error);
         });
-
-      // getCategoryLink()
-      //   .then(function (link) {
-      //     var request = {
-      //       method: "GET",
-      //       url: link,
-      //       headers: {
-      //         Authorization: "basic " + UserService.getFromStorage("iauth"),
-      //       },
-      //     };
-      //     return $http(request);
-      //   })
-      //   .then(function (measures) {
-      //     deferred.resolve(measures.data.items);
-      //   })
-      //   .catch(function (error) {
-      //     deferred.reject(error);
-      //   });
 
       return deferred.promise;
     }
@@ -104,6 +86,43 @@
       });
 
       return deferred.promise;
+    }
+
+    function _forgeHttpRequest(url) {
+      return {
+        method: "GET",
+        url: INSTANCE_URL + url,
+        headers: {
+          Authorization: "basic " + UserService.getFromStorage("iauth"),
+        },
+      };
+    }
+
+    function _getChartConfigFromScore(score) {
+      debugger;
+      var graph = demoCharts[1];
+      graph.title.text = score.data.meta.title;
+      graph.subtitle.text = null;
+      graph.yAxis.accessibility = null;
+      graph.chart.type = getGraphType(score);
+
+      graph.series = [
+        {
+          name: score.data.meta["00c2b84251af47bcae3c74bf2f012f38"][0]["unit"],
+          data: [70],
+        },
+      ];
+
+      return graph;
+    }
+
+    function getGraphType(score) {
+      console.log(score.data.items[0].graph_config.graph_type);
+      var apiType = score.data.items[0].graph_config.graph_type;
+      switch (apiType) {
+        default:
+          return "line";
+      }
     }
   }
 
@@ -143,7 +162,7 @@ var demoCharts = [
         label: {
           connectorAllowed: false,
         },
-        pointStart: 2010,
+        pointStart: new Date().getUTCFullYear(),
       },
     },
 

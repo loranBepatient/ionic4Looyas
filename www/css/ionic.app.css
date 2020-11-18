@@ -9900,3 +9900,9 @@ a.button {
   margin: 1rem;
   display: flex;
   justify-content: center; }
+
+.highchart-holder {
+  border: 2px solid #387ef5;
+  margin: 1rem;
+  display: flex;
+  justify-content: center; }
