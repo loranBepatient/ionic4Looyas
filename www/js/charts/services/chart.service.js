@@ -99,30 +99,36 @@
     }
 
     function _getChartConfigFromScore(score) {
-      debugger;
       var graph = demoCharts[1];
       graph.title.text = score.data.meta.title;
       graph.subtitle.text = null;
       graph.yAxis.accessibility = null;
       graph.chart.type = getGraphType(score);
+      graph.xAxis.type = "datetime";
 
-      graph.series = [
-        {
-          name: score.data.meta["00c2b84251af47bcae3c74bf2f012f38"][0]["unit"],
-          data: [70],
-        },
-      ];
+      graph.series = getSeries(score);
 
       return graph;
     }
 
     function getGraphType(score) {
-      console.log(score.data.items[0].graph_config.graph_type);
       var apiType = score.data.items[0].graph_config.graph_type;
       switch (apiType) {
         default:
           return "line";
       }
+    }
+
+    function getSeries(score) {
+      var currentDataId = score.data.items[0]["data_id"];
+      var currentData = Object.values(score.data.data[currentDataId]);
+
+      var seriesData = currentData.map(function (data) {
+        return [data.timestamp, data[0]];
+      });
+      // debugger;
+
+      return [{ name: "toto", data: seriesData }];
     }
   }
 
