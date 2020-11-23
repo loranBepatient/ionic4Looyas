@@ -1,7 +1,8 @@
 (function () {
-  function controller(UserService) {
+  function controller(UserService, $state) {
     var ctrl = this;
     ctrl.title = "Super title";
+    ctrl.goToProfile = goToProfile;
 
     init();
 
@@ -13,6 +14,10 @@
         .catch(function (message) {
           alert(message);
         });
+    }
+
+    function goToProfile() {
+      $state.go("profile");
     }
   }
   angular.module("homeModule").controller("homeController", controller);

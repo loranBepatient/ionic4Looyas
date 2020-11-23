@@ -10,7 +10,11 @@
   </ion-header-bar>
 
   <ion-content id="home" class="has-header" padding>
-    <div class="card user-card" ng-if="$ctrl.user">
+    <div
+      class="card user-card"
+      ng-if="$ctrl.user"
+      ng-click="$ctrl.goToProfile()"
+    >
       <div class="item item-avatar">
         <img data-ng-src="data:image/png;base64,{{ $ctrl.user.avatar }}" />
         <h2>{{ $ctrl.user.nickname }}</h2>

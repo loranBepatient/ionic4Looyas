@@ -11,6 +11,7 @@ angular
     "todosModule",
     "loginModule",
     "chartsModule",
+    "profileModule",
     "ngAnimate",
   ])
 
